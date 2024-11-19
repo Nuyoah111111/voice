@@ -1,0 +1,278 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>音频列表</title>
+  <style>
+    ul {
+      display: flex;            /* 使用 flexbox 布局 */
+      flex-wrap: wrap;          /* 允许换行 */
+      padding: 0;
+      list-style-type: none;
+      margin: 0;
+    }
+    li {
+      flex-basis: calc(100% / 11 - 10px); /* 每个li占一行的1/11，减去间距 */
+      margin-right: 10px;       /* 每个音频名称之间的间距 */
+      margin-bottom: 10px;      /* 行与行之间的间距 */
+      cursor: pointer;
+    }
+    li:nth-child(11n) {
+      margin-right: 0;          /* 每行最后一个元素不需要右侧间距 */
+    }
+    li:hover {
+      background-color: #f0f0f0;
+      padding: 5px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+<body>
+  <h1>选择一个音频播放</h1>
+
+
+  <ul id="audio-list">
+    <!-- 动态生成音频列表项 -->
+  </ul>
+
+  <audio id="audio-player" controls>
+    您的浏览器不支持 audio 元素。
+  </audio>
+
+  <script>
+
+    const audioFiles = [
+        { name: 'cosyvoice模型 ——目标音频', path: '400378.wav' },
+        { name: '短音频LJ018-0067第1次vc', path: 'cosyvoice_0_4_seconds/LJ018-0067_0.wav' },
+        { name: '短音频LJ018-0067第2次vc', path: 'cosyvoice_0_4_seconds/LJ018-0067_1.wav' },
+        { name: '短音频LJ018-0067第3次vc', path: 'cosyvoice_0_4_seconds/LJ018-0067_2.wav' },
+        { name: '短音频LJ018-0067第4次vc', path: 'cosyvoice_0_4_seconds/LJ018-0067_3.wav' },
+        { name: '短音频LJ018-0067第5次vc', path: 'cosyvoice_0_4_seconds/LJ018-0067_4.wav' },
+        { name: '短音频LJ018-0067第6次vc', path: 'cosyvoice_0_4_seconds/LJ018-0067_5.wav' },
+        { name: '短音频LJ018-0067第7次vc', path: 'cosyvoice_0_4_seconds/LJ018-0067_6.wav' },
+        { name: '短音频LJ018-0067第8次vc', path: 'cosyvoice_0_4_seconds/LJ018-0067_7.wav' },
+        { name: '短音频LJ018-0067第9次vc', path: 'cosyvoice_0_4_seconds/LJ018-0067_8.wav' },
+        { name: '短音频LJ018-0067第10次vc', path: 'cosyvoice_0_4_seconds/LJ018-0067_9.wav' },
+
+        { name: 'cosyvoice模型 ——目标音频', path: '400378.wav' },
+        { name: '短音频LJ032-0016第1次vc', path: 'cosyvoice_0_4_seconds/LJ032-0016_0.wav' },
+        { name: '短音频LJ032-0016第2次vc', path: 'cosyvoice_0_4_seconds/LJ032-0016_1.wav' },
+        { name: '短音频LJ032-0016第3次vc', path: 'cosyvoice_0_4_seconds/LJ032-0016_2.wav' },
+        { name: '短音频LJ032-0016第4次vc', path: 'cosyvoice_0_4_seconds/LJ032-0016_3.wav' },
+        { name: '短音频LJ032-0016第5次vc', path: 'cosyvoice_0_4_seconds/LJ032-0016_4.wav' },
+        { name: '短音频LJ032-0016第6次vc', path: 'cosyvoice_0_4_seconds/LJ032-0016_5.wav' },
+        { name: '短音频LJ032-0016第7次vc', path: 'cosyvoice_0_4_seconds/LJ032-0016_6.wav' },
+        { name: '短音频LJ032-0016第8次vc', path: 'cosyvoice_0_4_seconds/LJ032-0016_7.wav' },
+        { name: '短音频LJ032-0016第9次vc', path: 'cosyvoice_0_4_seconds/LJ032-0016_8.wav' },
+        { name: '短音频LJ032-0016第10次vc', path: 'cosyvoice_0_4_seconds/LJ032-0016_9.wav' },
+
+        { name: 'cosyvoice模型 ——目标音频', path: '400378.wav' },
+        { name: '短音频LJ047-0148第1次vc', path: 'cosyvoice_0_4_seconds/LJ047-0148_0.wav' },
+        { name: '短音频LJ047-0148第2次vc', path: 'cosyvoice_0_4_seconds/LJ047-0148_1.wav' },
+        { name: '短音频LJ047-0148第3次vc', path: 'cosyvoice_0_4_seconds/LJ047-0148_2.wav' },
+        { name: '短音频LJ047-0148第4次vc', path: 'cosyvoice_0_4_seconds/LJ047-0148_3.wav' },
+        { name: '短音频LJ047-0148第5次vc', path: 'cosyvoice_0_4_seconds/LJ047-0148_4.wav' },
+        { name: '短音频LJ047-0148第6次vc', path: 'cosyvoice_0_4_seconds/LJ047-0148_5.wav' },
+        { name: '短音频LJ047-0148第7次vc', path: 'cosyvoice_0_4_seconds/LJ047-0148_6.wav' },
+        { name: '短音频LJ047-0148第8次vc', path: 'cosyvoice_0_4_seconds/LJ047-0148_7.wav' },
+        { name: '短音频LJ047-0148第9次vc', path: 'cosyvoice_0_4_seconds/LJ047-0148_8.wav' },
+        { name: '短音频LJ047-0148第10次vc', path: 'cosyvoice_0_4_seconds/LJ047-0148_9.wav' },
+
+        { name: 'cosyvoice模型 ——目标音频', path: '400378.wav' },
+        { name: '中音频LJ004-0044第1次vc', path: 'cosyvoice_4_7_seconds/LJ004-0044_0.wav' },
+        { name: '中音频LJ004-0044第2次vc', path: 'cosyvoice_4_7_seconds/LJ004-0044_1.wav' },
+        { name: '中音频LJ004-0044第3次vc', path: 'cosyvoice_4_7_seconds/LJ004-0044_2.wav' },
+        { name: '中音频LJ004-0044第4次vc', path: 'cosyvoice_4_7_seconds/LJ004-0044_3.wav' },
+        { name: '中音频LJ004-0044第5次vc', path: 'cosyvoice_4_7_seconds/LJ004-0044_4.wav' },
+        { name: '中音频LJ004-0044第6次vc', path: 'cosyvoice_4_7_seconds/LJ004-0044_5.wav' },
+        { name: '中音频LJ004-0044第7次vc', path: 'cosyvoice_4_7_seconds/LJ004-0044_6.wav' },
+        { name: '中音频LJ004-0044第8次vc', path: 'cosyvoice_4_7_seconds/LJ004-0044_7.wav' },
+        { name: '中音频LJ004-0044第9次vc', path: 'cosyvoice_4_7_seconds/LJ004-0044_8.wav' },
+        { name: '中音频LJ004-0044第10次vc', path: 'cosyvoice_4_7_seconds/LJ004-0044_9.wav' },
+
+        {name: 'cosyvoice模型 ——目标音频', path: '400378.wav'},
+        {name: '中音频LJ015-0136第1次vc', path: 'cosyvoice_4_7_seconds/LJ015-0136_0.wav'},
+        {name: '中音频LJ015-0136第2次vc', path: 'cosyvoice_4_7_seconds/LJ015-0136_1.wav'},
+        {name: '中音频LJ015-0136第3次vc', path: 'cosyvoice_4_7_seconds/LJ015-0136_2.wav'},
+        {name: '中音频LJ015-0136第4次vc', path: 'cosyvoice_4_7_seconds/LJ015-0136_3.wav'},
+        {name: '中音频LJ015-0136第5次vc', path: 'cosyvoice_4_7_seconds/LJ015-0136_4.wav'},
+        {name: '中音频LJ015-0136第6次vc', path: 'cosyvoice_4_7_seconds/LJ015-0136_5.wav'},
+        {name: '中音频LJ015-0136第7次vc', path: 'cosyvoice_4_7_seconds/LJ015-0136_6.wav'},
+        {name: '中音频LJ015-0136第8次vc', path: 'cosyvoice_4_7_seconds/LJ015-0136_7.wav'},
+        {name: '中音频LJ015-0136第9次vc', path: 'cosyvoice_4_7_seconds/LJ015-0136_8.wav'},
+        {name: '中音频LJ015-0136第10次vc', path: 'cosyvoice_4_7_seconds/LJ015-0136_9.wav'},
+        
+        {name: 'cosyvoice模型 ——目标音频', path: '400378.wav'},
+        {name: '中音频LJ037-0129第1次vc', path: 'cosyvoice_4_7_seconds/LJ037-0129_0.wav'},
+        {name: '中音频LJ037-0129第2次vc', path: 'cosyvoice_4_7_seconds/LJ037-0129_1.wav'},
+        {name: '中音频LJ037-0129第3次vc', path: 'cosyvoice_4_7_seconds/LJ037-0129_2.wav'},
+        {name: '中音频LJ037-0129第4次vc', path: 'cosyvoice_4_7_seconds/LJ037-0129_3.wav'},
+        {name: '中音频LJ037-0129第5次vc', path: 'cosyvoice_4_7_seconds/LJ037-0129_4.wav'},
+        {name: '中音频LJ037-0129第6次vc', path: 'cosyvoice_4_7_seconds/LJ037-0129_5.wav'},
+        {name: '中音频LJ037-0129第7次vc', path: 'cosyvoice_4_7_seconds/LJ037-0129_6.wav'},
+        {name: '中音频LJ037-0129第8次vc', path: 'cosyvoice_4_7_seconds/LJ037-0129_7.wav'},
+        {name: '中音频LJ037-0129第9次vc', path: 'cosyvoice_4_7_seconds/LJ037-0129_8.wav'},
+        {name: '中音频LJ037-0129第10次vc', path: 'cosyvoice_4_7_seconds/LJ037-0129_9.wav'},
+
+        {name: 'cosyvoice模型 ——目标音频', path: '400378.wav'},
+        {name: '高音频LJ004-0130第1次vc', path: 'cosyvoice_over_7_seconds/LJ004-0130_0.wav'},
+        {name: '高音频LJ004-0130第2次vc', path: 'cosyvoice_over_7_seconds/LJ004-0130_1.wav'},
+        {name: '高音频LJ004-0130第3次vc', path: 'cosyvoice_over_7_seconds/LJ004-0130_2.wav'},
+        {name: '高音频LJ004-0130第4次vc', path: 'cosyvoice_over_7_seconds/LJ004-0130_3.wav'},
+        {name: '高音频LJ004-0130第5次vc', path: 'cosyvoice_over_7_seconds/LJ004-0130_4.wav'},
+        {name: '高音频LJ004-0130第6次vc', path: 'cosyvoice_over_7_seconds/LJ004-0130_5.wav'},
+        {name: '高音频LJ004-0130第7次vc', path: 'cosyvoice_over_7_seconds/LJ004-0130_6.wav'},
+        {name: '高音频LJ004-0130第8次vc', path: 'cosyvoice_over_7_seconds/LJ004-0130_7.wav'},
+        {name: '高音频LJ004-0130第9次vc', path: 'cosyvoice_over_7_seconds/LJ004-0130_8.wav'},
+        {name: '高音频LJ004-0130第10次vc', path: 'cosyvoice_over_7_seconds/LJ004-0130_9.wav'},
+
+        {name: 'cosyvoice模型 ——目标音频', path: '400378.wav'},
+        {name: '高音频LJ011-0293第1次vc', path: 'cosyvoice_over_7_seconds/LJ011-0293_0.wav'},
+        {name: '高音频LJ011-0293第2次vc', path: 'cosyvoice_over_7_seconds/LJ011-0293_1.wav'},
+        {name: '高音频LJ011-0293第3次vc', path: 'cosyvoice_over_7_seconds/LJ011-0293_2.wav'},
+        {name: '高音频LJ011-0293第4次vc', path: 'cosyvoice_over_7_seconds/LJ011-0293_3.wav'},
+        {name: '高音频LJ011-0293第5次vc', path: 'cosyvoice_over_7_seconds/LJ011-0293_4.wav'},
+        {name: '高音频LJ011-0293第6次vc', path: 'cosyvoice_over_7_seconds/LJ011-0293_5.wav'},
+        {name: '高音频LJ011-0293第7次vc', path: 'cosyvoice_over_7_seconds/LJ011-0293_6.wav'},
+        {name: '高音频LJ011-0293第8次vc', path: 'cosyvoice_over_7_seconds/LJ011-0293_7.wav'},
+        {name: '高音频LJ011-0293第9次vc', path: 'cosyvoice_over_7_seconds/LJ011-0293_8.wav'},
+        {name: '高音频LJ011-0293第10次vc', path: 'cosyvoice_over_7_seconds/LJ011-0293_9.wav'},
+        
+        {name: 'cosyvoice模型 ——目标音频', path: '400378.wav'},
+        {name: '高音频LJ030-0128第1次vc', path: 'cosyvoice_over_7_seconds/LJ030-0128_0.wav'},
+        {name: '高音频LJ030-0128第2次vc', path: 'cosyvoice_over_7_seconds/LJ030-0128_1.wav'},
+        {name: '高音频LJ030-0128第3次vc', path: 'cosyvoice_over_7_seconds/LJ030-0128_2.wav'},
+        {name: '高音频LJ030-0128第4次vc', path: 'cosyvoice_over_7_seconds/LJ030-0128_3.wav'},
+        {name: '高音频LJ030-0128第5次vc', path: 'cosyvoice_over_7_seconds/LJ030-0128_4.wav'},
+        {name: '高音频LJ030-0128第6次vc', path: 'cosyvoice_over_7_seconds/LJ030-0128_5.wav'},
+        {name: '高音频LJ030-0128第7次vc', path: 'cosyvoice_over_7_seconds/LJ030-0128_6.wav'},
+        {name: '高音频LJ030-0128第8次vc', path: 'cosyvoice_over_7_seconds/LJ030-0128_7.wav'},
+        {name: '高音频LJ030-0128第9次vc', path: 'cosyvoice_over_7_seconds/LJ030-0128_8.wav'},
+        {name: '高音频LJ030-0128第10次vc', path: 'cosyvoice_over_7_seconds/LJ030-0128_9.wav'},
+
+        {name: 'seedvc模型 ——目标音频', path: '400378.wav'},
+        {name: '短音频LJ018-0067第1次vc', path: 'seedvc_0_4_seconds/LJ018-0067_0.wav'},
+        {name: '短音频LJ018-0067第2次vc', path: 'seedvc_0_4_seconds/LJ018-0067_1.wav'},
+        {name: '短音频LJ018-0067第3次vc', path: 'seedvc_0_4_seconds/LJ018-0067_2.wav'},
+        {name: '短音频LJ018-0067第4次vc', path: 'seedvc_0_4_seconds/LJ018-0067_3.wav'},
+        {name: '短音频LJ018-0067第5次vc', path: 'seedvc_0_4_seconds/LJ018-0067_4.wav'},
+        {name: '短音频LJ018-0067第6次vc', path: 'seedvc_0_4_seconds/LJ018-0067_5.wav'},
+        {name: '短音频LJ018-0067第7次vc', path: 'seedvc_0_4_seconds/LJ018-0067_6.wav'},
+        {name: '短音频LJ018-0067第8次vc', path: 'seedvc_0_4_seconds/LJ018-0067_7.wav'},
+        {name: '短音频LJ018-0067第9次vc', path: 'seedvc_0_4_seconds/LJ018-0067_8.wav'},
+        {name: '短音频LJ018-0067第10次vc', path: 'seedvc_0_4_seconds/LJ018-0067_9.wav'},
+
+        {name: 'seedvc模型 ——目标音频', path: '400378.wav'},
+        {name: '短音频LJ032-0016第1次vc', path: 'seedvc_0_4_seconds/LJ032-0016_0.wav'},
+        {name: '短音频LJ032-0016第2次vc', path: 'seedvc_0_4_seconds/LJ032-0016_1.wav'},
+        {name: '短音频LJ032-0016第3次vc', path: 'seedvc_0_4_seconds/LJ032-0016_2.wav'},
+        {name: '短音频LJ032-0016第4次vc', path: 'seedvc_0_4_seconds/LJ032-0016_3.wav'},
+        {name: '短音频LJ032-0016第5次vc', path: 'seedvc_0_4_seconds/LJ032-0016_4.wav'},
+        {name: '短音频LJ032-0016第6次vc', path: 'seedvc_0_4_seconds/LJ032-0016_5.wav'},
+        {name: '短音频LJ032-0016第7次vc', path: 'seedvc_0_4_seconds/LJ032-0016_6.wav'},
+        {name: '短音频LJ032-0016第8次vc', path: 'seedvc_0_4_seconds/LJ032-0016_7.wav'},
+        {name: '短音频LJ032-0016第9次vc', path: 'seedvc_0_4_seconds/LJ032-0016_8.wav'},
+        {name: '短音频LJ032-0016第10次vc', path: 'seedvc_0_4_seconds/LJ032-0016_9.wav'},
+
+        {name: 'seedvc模型 ——目标音频', path: '400378.wav'},
+        {name: '短音频LJ047-0148第1次vc', path: 'seedvc_0_4_seconds/LJ047-0148_0.wav'},
+        {name: '短音频LJ047-0148第2次vc', path: 'seedvc_0_4_seconds/LJ047-0148_1.wav'},
+        {name: '短音频LJ047-0148第3次vc', path: 'seedvc_0_4_seconds/LJ047-0148_2.wav'},
+        {name: '短音频LJ047-0148第4次vc', path: 'seedvc_0_4_seconds/LJ047-0148_3.wav'},
+        {name: '短音频LJ047-0148第5次vc', path: 'seedvc_0_4_seconds/LJ047-0148_4.wav'},
+        {name: '短音频LJ047-0148第6次vc', path: 'seedvc_0_4_seconds/LJ047-0148_5.wav'},
+        {name: '短音频LJ047-0148第7次vc', path: 'seedvc_0_4_seconds/LJ047-0148_6.wav'},
+        {name: '短音频LJ047-0148第8次vc', path: 'seedvc_0_4_seconds/LJ047-0148_7.wav'},
+        {name: '短音频LJ047-0148第9次vc', path: 'seedvc_0_4_seconds/LJ047-0148_8.wav'},
+        {name: '短音频LJ047-0148第10次vc', path: 'seedvc_0_4_seconds/LJ047-0148_9.wav'},
+
+        {name: 'seedvc模型 ——目标音频', path: '400378.wav'},
+        {name: '中音频LJ004-0044第1次vc', path: 'seedvc_4_7_seconds/LJ004-0044_0.wav'},
+        {name: '中音频LJ004-0044第2次vc', path: 'seedvc_4_7_seconds/LJ004-0044_1.wav'},
+        {name: '中音频LJ004-0044第3次vc', path: 'seedvc_4_7_seconds/LJ004-0044_2.wav'},
+        {name: '中音频LJ004-0044第4次vc', path: 'seedvc_4_7_seconds/LJ004-0044_3.wav'},
+        {name: '中音频LJ004-0044第5次vc', path: 'seedvc_4_7_seconds/LJ004-0044_4.wav'},
+        {name: '中音频LJ004-0044第6次vc', path: 'seedvc_4_7_seconds/LJ004-0044_5.wav'},
+        {name: '中音频LJ004-0044第7次vc', path: 'seedvc_4_7_seconds/LJ004-0044_6.wav'},
+        {name: '中音频LJ004-0044第8次vc', path: 'seedvc_4_7_seconds/LJ004-0044_7.wav'},
+        {name: '中音频LJ004-0044第9次vc', path: 'seedvc_4_7_seconds/LJ004-0044_8.wav'},
+        {name: '中音频LJ004-0044第10次vc', path: 'seedvc_4_7_seconds/LJ004-0044_9.wav'},
+
+        {name: 'seedvc模型 ——目标音频', path: '400378.wav'},
+        {name: '中音频LJ015-0136第1次vc', path: 'seedvc_4_7_seconds/LJ015-0136_0.wav'},
+        {name: '中音频LJ015-0136第2次vc', path: 'seedvc_4_7_seconds/LJ015-0136_1.wav'},
+        {name: '中音频LJ015-0136第3次vc', path: 'seedvc_4_7_seconds/LJ015-0136_2.wav'},
+        {name: '中音频LJ015-0136第4次vc', path: 'seedvc_4_7_seconds/LJ015-0136_3.wav'},
+        {name: '中音频LJ015-0136第5次vc', path: 'seedvc_4_7_seconds/LJ015-0136_4.wav'},
+        {name: '中音频LJ015-0136第6次vc', path: 'seedvc_4_7_seconds/LJ015-0136_5.wav'},
+        {name: '中音频LJ015-0136第7次vc', path: 'seedvc_4_7_seconds/LJ015-0136_6.wav'},
+        {name: '中音频LJ015-0136第8次vc', path: 'seedvc_4_7_seconds/LJ015-0136_7.wav'},
+        {name: '中音频LJ015-0136第9次vc', path: 'seedvc_4_7_seconds/LJ015-0136_8.wav'},
+        {name: '中音频LJ015-0136第10次vc', path: 'seedvc_4_7_seconds/LJ015-0136_9.wav'},
+
+        {name: 'seedvc模型 ——目标音频', path: '400378.wav'},
+        {name: '中音频LJ037-0129第1次vc', path: 'seedvc_4_7_seconds/LJ037-0129_0.wav'},
+        {name: '中音频LJ037-0129第2次vc', path: 'seedvc_4_7_seconds/LJ037-0129_1.wav'},
+        {name: '中音频LJ037-0129第3次vc', path: 'seedvc_4_7_seconds/LJ037-0129_2.wav'},
+        {name: '中音频LJ037-0129第4次vc', path: 'seedvc_4_7_seconds/LJ037-0129_3.wav'},
+        {name: '中音频LJ037-0129第5次vc', path: 'seedvc_4_7_seconds/LJ037-0129_4.wav'},
+        {name: '中音频LJ037-0129第6次vc', path: 'seedvc_4_7_seconds/LJ037-0129_5.wav'},
+        {name: '中音频LJ037-0129第7次vc', path: 'seedvc_4_7_seconds/LJ037-0129_6.wav'},
+        {name: '中音频LJ037-0129第8次vc', path: 'seedvc_4_7_seconds/LJ037-0129_7.wav'},
+        {name: '中音频LJ037-0129第9次vc', path: 'seedvc_4_7_seconds/LJ037-0129_8.wav'},
+        {name: '中音频LJ037-0129第10次vc', path: 'seedvc_4_7_seconds/LJ037-0129_9.wav'},
+
+        {name: 'seedvc模型 ——目标音频', path: '400378.wav'},
+        {name: '高音频LJ004-0130第1次vc', path: 'seedvc_over_7_seconds/LJ004-0130_0.wav'},
+        {name: '高音频LJ004-0130第2次vc', path: 'seedvc_over_7_seconds/LJ004-0130_1.wav'},
+        {name: '高音频LJ004-0130第3次vc', path: 'seedvc_over_7_seconds/LJ004-0130_2.wav'},
+        {name: '高音频LJ004-0130第4次vc', path: 'seedvc_over_7_seconds/LJ004-0130_3.wav'},
+        {name: '高音频LJ004-0130第5次vc', path: 'seedvc_over_7_seconds/LJ004-0130_4.wav'},
+        {name: '高音频LJ004-0130第6次vc', path: 'seedvc_over_7_seconds/LJ004-0130_5.wav'},
+        {name: '高音频LJ004-0130第7次vc', path: 'seedvc_over_7_seconds/LJ004-0130_6.wav'},
+        {name: '高音频LJ004-0130第8次vc', path: 'seedvc_over_7_seconds/LJ004-0130_7.wav'},
+        {name: '高音频LJ004-0130第9次vc', path: 'seedvc_over_7_seconds/LJ004-0130_8.wav'},
+        {name: '高音频LJ004-0130第10次vc', path: 'seedvc_over_7_seconds/LJ004-0130_9.wav'},
+
+        {name: 'seedvc模型 ——目标音频', path: '400378.wav'},
+        {name: '高音频LJ011-0293第1次vc', path: 'seedvc_over_7_seconds/LJ011-0293_0.wav'},
+        {name: '高音频LJ011-0293第2次vc', path: 'seedvc_over_7_seconds/LJ011-0293_1.wav'},
+        {name: '高音频LJ011-0293第3次vc', path: 'seedvc_over_7_seconds/LJ011-0293_2.wav'},
+        {name: '高音频LJ011-0293第4次vc', path: 'seedvc_over_7_seconds/LJ011-0293_3.wav'},
+        {name: '高音频LJ011-0293第5次vc', path: 'seedvc_over_7_seconds/LJ011-0293_4.wav'},
+        {name: '高音频LJ011-0293第6次vc', path: 'seedvc_over_7_seconds/LJ011-0293_5.wav'},
+        {name: '高音频LJ011-0293第7次vc', path: 'seedvc_over_7_seconds/LJ011-0293_6.wav'},
+        {name: '高音频LJ011-0293第8次vc', path: 'seedvc_over_7_seconds/LJ011-0293_7.wav'},
+        {name: '高音频LJ011-0293第9次vc', path: 'seedvc_over_7_seconds/LJ011-0293_8.wav'},
+        {name: '高音频LJ011-0293第10次vc', path: 'seedvc_over_7_seconds/LJ011-0293_9.wav'},
+
+        {name: 'seedvc模型 ——目标音频', path: '400378.wav'},
+        {name: '高音频LJ030-0128第1次vc', path: 'seedvc_over_7_seconds/LJ030-0128_0.wav'},
+        {name: '高音频LJ030-0128第2次vc', path: 'seedvc_over_7_seconds/LJ030-0128_1.wav'},
+        {name: '高音频LJ030-0128第3次vc', path: 'seedvc_over_7_seconds/LJ030-0128_2.wav'},
+        {name: '高音频LJ030-0128第4次vc', path: 'seedvc_over_7_seconds/LJ030-0128_3.wav'},
+        {name: '高音频LJ030-0128第5次vc', path: 'seedvc_over_7_seconds/LJ030-0128_4.wav'},
+        {name: '高音频LJ030-0128第6次vc', path: 'seedvc_over_7_seconds/LJ030-0128_5.wav'},
+        {name: '高音频LJ030-0128第7次vc', path: 'seedvc_over_7_seconds/LJ030-0128_6.wav'},
+        {name: '高音频LJ030-0128第8次vc', path: 'seedvc_over_7_seconds/LJ030-0128_7.wav'},
+        {name: '高音频LJ030-0128第9次vc', path: 'seedvc_over_7_seconds/LJ030-0128_8.wav'},
+        {name: '高音频LJ030-0128第10次vc', path: 'seedvc_over_7_seconds/LJ030-0128_9.wav'},
+    ];
+
+    const audioList = document.getElementById('audio-list');
+    const audioPlayer = document.getElementById('audio-player');
+
+    audioFiles.forEach(file => {
+      const li = document.createElement('li');
+      li.textContent = file.name;
+      li.onclick = () => {
+        audioPlayer.src = file.path;
+        audioPlayer.play();
+      };
+      audioList.appendChild(li);
+    });
+  </script>
+
+</body>
+</html>
